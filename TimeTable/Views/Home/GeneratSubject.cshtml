@@ -1,0 +1,301 @@
+﻿@model TimeTable.Models.InputFields
+@{
+    ViewBag.Title = "GenerateSubject";
+}
+<head>
+    <title>Dynamic Table</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <style>
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .form-group input[type="text"] {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 8px;
+        }
+
+        .table-container {
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            text-align: center;
+            padding: 8px;
+        }
+    </style>
+</head>
+<h2>Subjects With Destributed Hours</h2>
+<div class="form-container">
+    <div class="form-group">
+
+    </div>
+    @if (Model.Total_Subjects == 1)
+    {
+        <div class="form-group">
+            <label id="sub_Gujarati">Gujarati </label>
+            <input type="text" id="Gujarati_Hour" value=@Model.Sub_Working_Hours />
+        </div>
+
+    }
+    else if (Model.Total_Subjects == 2)
+    {
+        <div class="form-group">
+            <label id="sub_Gujarati">Gujarati </label>
+            <input type="text" id="Gujarati_Hour" value=@Model.Sub_Working_Hours />
+        </div>
+        <div class="form-group">
+            <label id="sub_English">English </label>
+            <input type="text" id="English_Hour" value=@Model.Sub_Working_Hours />
+        </div>
+
+    }
+    else if (Model.Total_Subjects == 3)
+    {
+        <div class="form-group">
+            <label id="sub_Gujarati">Gujarati </label>
+            <input type="text" id="Gujarati_Hour" value=@Model.Sub_Working_Hours />
+        </div>
+        <div class="form-group">
+            <label id="sub_English">English </label>
+            <input type="text" id="English_Hour" value=@Model.Sub_Working_Hours />
+        </div>
+        <div class="form-group">
+            <label id="sub_Science">Science </label>
+            <input type="text" id="Science_Hour" value=@Model.Sub_Working_Hours />
+        </div>
+    }
+    else
+
+    {
+        <div class="form-group">
+            <label id="sub_Gujarati">Gujarati </label>
+            <input type="text" id="Gujarati_Hour" value=@Model.Sub_Working_Hours />
+        </div>
+
+        <div class="form-group">
+            <label id="sub_English">English </label>
+            <input type="text" id="English_Hour" value=@Model.Sub_Working_Hours />
+        </div>
+
+
+        <div class="form-group">
+            <label id="sub_Science">Science </label>
+            <input type="text" id="Science_Hour" value=@Model.Sub_Working_Hours />
+        </div>
+
+        <div class="form-group">
+            <label id="sub_Maths">Maths </label>
+            <input type="text" id="Maths_Hour" value="@Model.Sub_Working_Hours" />
+        </div>
+
+    }
+
+</div>
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dynamic Table</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Dynamic Table Generator</h1>
+        <div class="form-group">
+            <label for="colCount">Total Columns (Working Days):</label>
+            <input type="number" id="colCount" min="1" value="@Model.No_of_Working_days">
+        </div>
+
+        <div class="form-group">
+            <label for="rowCount">Total Rows (Subjects per Day):</label>
+            <input type="number" id="rowCount" min="1" value="@Model.No_of_Subjects_per_day">
+        </div> 
+
+        <div class="form-group">
+            <label> Total hours of subject</label>
+            <input type="text" value="@Model.Total_hours_for_week" />
+        </div>
+
+    </div>
+
+    <br />
+    <button id="createTable" onclick="createTable()">Generate Table</button>
+    <br>
+    <div id="tableContainer"></div>
+    <script>
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function createTable() {
+            var gujaratiHours = parseInt($("#Gujarati_Hour").val());
+            var englishHours = parseInt($("#English_Hour").val());
+            var scienceHours = parseInt($("#Science_Hour").val());
+            var mathsHours = parseInt($("#Maths_Hour").val());
+
+            var totalColumns = parseInt($("#colCount").val());
+            var totalRows = parseInt($("#rowCount").val());
+            var subjects = [];
+
+            // Shuffle the subjects into an array
+            for (var i = 0; i < gujaratiHours; i++) {
+                subjects.push("Gujarati");
+            }
+            for (var i = 0; i < englishHours; i++) {
+                subjects.push("English");
+            }
+            for (var i = 0; i < scienceHours; i++) {
+                subjects.push("Science");
+            }
+            for (var i = 0; i < mathsHours; i++) {
+                subjects.push("Maths");
+            }
+
+            // Shuffle the subjects randomly
+            shuffleArray(subjects);
+
+            // Clear the previous table, if any
+            document.getElementById("tableContainer").innerHTML = "";
+
+            // Create a new table element
+            var table = document.createElement("table");
+            table.border = "1";
+
+            for (var i = 0; i < totalRows; i++) {
+                var row = table.insertRow(i);
+                for (var j = 0; j < totalColumns; j++) {
+                    var cell = row.insertCell(j);
+                    var subject = subjects.pop() || "";
+
+                    cell.textContent = subject;
+
+                     
+                }
+            }
+
+            document.getElementById("tableContainer").appendChild(table);
+        }
+    </script>
+
+    @*<script>
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+
+
+
+            function createtable() {
+                var gujaratihours = parseint($("#gujarati_hour").val());
+                var englishhours = parseint($("#english_hour").val());
+                var sciencehours = parseint($("#science_hour").val());
+                var mathshours = parseint($("#maths_hour").val());
+
+                var totalcolumns = parseint($("#colcount").val());
+                var totalrows = parseint($("#rowcount").val());
+                var subjects = [];
+                for (var i = 0; i < gujaratihours; i++) {
+                    subjects.push("gujarati");
+                }
+                for (var i = 0; i < englishhours; i++) {
+                    subjects.push("english");
+                }
+                for (var i = 0; i < sciencehours; i++) {
+                    subjects.push("science");
+                }
+                for (var i = 0; i < mathshours; i++) {
+                    subjects.push("maths");
+                }
+
+                // shuffle the subjects randomly
+                shufflearray(subjects);
+
+                // clear the previous table, if any
+                document.getelementbyid("tablecontainer").innerhtml = "";
+
+                // create a new table element
+                var table = document.createelement("table");
+                table.border = "1";
+
+                for (var i = 0; i < totalrows; i++) {
+                    var row = table.insertrow(i);
+                    for (var j = 0; j < totalcolumns; j++) {
+                        var cell = row.insertcell(j);
+                        var subject = subjects.pop() || "";
+
+                        cell.textcontent = subject;
+                    }
+                }
+
+
+                document.getelementbyid("tablecontainer").appendchild(table);
+
+
+                var totalhours = gujaratihours + englishhours + sciencehours + mathshours;
+                var subjects = [];
+                for (var i = 0; i < gujaratihours; i++) {
+                    subjects.push("gujarati");
+                }
+                for (var i = 0; i < englishhours; i++) {
+                    subjects.push("english");
+                }
+                for (var i = 0; i < sciencehours; i++) {
+                    subjects.push("science");
+                }
+                for (var i = 0; i < mathshours; i++) {
+                    subjects.push("maths");
+                }
+
+                // shuffle the subjects randomly
+                shufflearray(subjects);
+
+                // clear the previous table, if any
+                document.getelementbyid("tablecontainer").innerhtml = "";
+
+                // create a new table element
+                var table = document.createelement("table");
+                table.border = "1";
+
+                for (var i = 0; i < totalrows; i++) {
+                    var row = table.insertrow(i);
+                    for (var j = 0; j < totalcolumns; j++) {
+                        var cell = row.insertcell(j);
+
+                        // pop a subject from the shuffled array or show an empty cell
+                        var subject = subjects.pop() || "";
+                        cell.textcontent = subject;
+                    }
+                }
+
+                document.getelementbyid("tablecontainer").appendchild(table);
+            }
+        </script>*@
+
+</body>
+</html>

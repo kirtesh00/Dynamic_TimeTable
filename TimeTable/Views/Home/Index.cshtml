@@ -1,0 +1,89 @@
+﻿
+@model TimeTable.Models.InputFields
+
+@using (Html.BeginForm("Index", "Home", FormMethod.Post))
+{
+    @Html.ValidationSummary(true)
+    <!DOCTYPE html>
+    <html>
+    <head>
+
+        <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <style>
+
+            .form-container {
+                background-color: #f9f9f9;
+                padding: 20px;
+                border-radius: 10px;
+            }
+
+            .btn-save {
+                margin-top: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="body-content">
+            <div class="form-container">
+                <div class="form-group">
+                    <label for="No_of_Working_days">No of Working days</label>
+                    <input type="number" class="form-control" id="No_of_Working_days" name="No_of_Working_days" tabindex="1" />
+                    @Html.ValidationMessageFor(m => m.No_of_Working_days, "", new { @class = "text-danger", @style = "display: none;" })
+
+                </div>
+
+                <div class="form-group">
+                    <label for="No_of_Subjects_per_day">No of Subjects per day</label>
+                    <input type="number" class="form-control" id="No_of_Subjects_per_day" name="No_of_Subjects_per_day" tabindex="1" />
+                    @Html.ValidationMessageFor(m => m.No_of_Subjects_per_day, "", new { @class = "text-danger", @style = "display: none;" })
+                </div>
+
+                <div class="form-group">
+                    <label for="Total_Subjects">Total Subjects</label>
+                    <input type="number" class="form-control" id="Total_Subjects" name="Total_Subjects" tabindex="1" maxlength="4" />
+                    @Html.ValidationMessageFor(m => m.Total_Subjects, "", new { @class = "text-danger", @style = "display: none;" })
+                </div>
+
+                <div class="form-group">
+                    <label for="Total_hours_for_week">Total hours for week</label>
+                    <input type="number" class="form-control" id="Total_hours_for_week" name="Total_hours_for_week" tabindex="1" readonly />
+                </div>
+
+                <button type="submit" class="btn btn-danger btn-save" id="Savebtn" onclick="getdata()">Save</button>
+
+            </div>
+        </div>
+
+
+    </body>
+</html>
+
+}
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+    });
+    function getdata() {
+        debugger;
+        var No_of_Working_days = $(" #No_of_Working_days").val()
+        var No_of_Subjects_per_day = $("#No_of_Subjects_per_day").val()
+        var Total_hours_for_week = $("#Total_hours_for_week").val(No_of_Working_days * No_of_Subjects_per_day);
+        if ($(".field-validation-error").length >
+            0) {
+            $(".text-danger").show();
+
+        }
+
+
+    }
+
+
+
+
+</script>
